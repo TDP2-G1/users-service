@@ -15,6 +15,8 @@ class user(db.Model):
     genre = db.Column(db.Integer, db.ForeignKey('genre.id_genre'), nullable=False)
     native_language = db.Column(db.Integer, db.ForeignKey('language.id_language'), nullable=False)
     practice_language = db.Column(db.Integer, db.ForeignKey('language.id_language'), nullable=False)
+    actual_level = db.Column(db.Integer, db.ForeignKey('level.id_level'), nullable=False)
+    topics_descriptions = db.Column(db.String(140), nullable=False)
 
     def __repr__(self):
         return f"user: {self.id_user}"
@@ -45,9 +47,9 @@ class language(db.Model):
         return f"language: {self.id_language}"
 
 
-class topic(db.Model):
-    id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
-    topics_descriptions = db.Column(db.String(140), nullable=False)
+class level(db.Model):
+    id_level = db.Column(db.Integer, primary_key=True, nullable=False)
+    level_description = db.Column(db.String(80), nullable=False)
 
     def __repr__(self):
-        return f"topic: {self.topics_descriptions}"
+        return f"level: {self.id_level}"
