@@ -1,4 +1,4 @@
-from usersServiceApp.Errors.usersException import usersException
+from usersServiceApp.errors.usersException import usersException
 from flask import Blueprint, current_app
 from flask import jsonify, render_template
 from flasgger.utils import swag_from
