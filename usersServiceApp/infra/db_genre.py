@@ -11,3 +11,7 @@ def create_genre(post_data):
 
 def get_genre_by_description(description):
     return genre.query.filter(genre.genre_description.ilike(description)).first()
+
+
+def get_genre_by_id(id_genre):
+    return genre.query.filter_by(id_genre=id_genre).first()

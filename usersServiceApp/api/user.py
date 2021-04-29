@@ -83,7 +83,17 @@ def register_new_user_api():
     try:
         post_data = request.get_json()
         validate_user_fields(post_data)
-        create_user(post_data)
+        _user = create_user(post_data)
     except usersException as e:
         return jsonify({'Error': e.message}), e.error_code
-    return jsonify({'Status': "OK"}), 200
+    return jsonify({'id_user': _user.id_user, "actual_level": _user.actual_level,
+                    "birth_date": _user.birth_date,
+                    "email": _user.email,
+                    "first_name": _user.first_name,
+                    "last_name": _user.last_name,
+                    "genre": _user.genre,
+                    "native_language": _user.native_language,
+                    "practice_language": _user.practice_language,
+                    "profile_picture": "string",
+                    "topics_descriptions": _user.topics_descriptions
+                    }), 200

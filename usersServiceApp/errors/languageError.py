@@ -9,3 +9,10 @@ class existentLanguageError(usersException):
         self.error_code = 403
         super().__init__(self.message, self.error_code)
 
+
+class notExistentLanguageError(usersException):
+    def __init__(self, message="Language doesn't exists."):
+        current_app.logger.error("Language doesn't exists.")
+        self.message = message
+        self.error_code = 403
+        super().__init__(self.message, self.error_code)

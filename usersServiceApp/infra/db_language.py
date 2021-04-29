@@ -11,3 +11,7 @@ def create_language(post_data):
 
 def get_language_by_description(description):
     return language.query.filter(language.language_description.ilike(description)).first()
+
+
+def get_language_by_id(id_language):
+    return language.query.filter_by(id_language=id_language).first()

@@ -1,13 +1,31 @@
-from usersServiceApp.errors.genreError import existentGenreError
-from usersServiceApp.errors.languageError import existentLanguageError
-from usersServiceApp.errors.levelError import existentLevelError
-from usersServiceApp.infra.db_genre import create_genre, get_genre_by_description
-from usersServiceApp.infra.db_language import get_language_by_description, create_language
-from usersServiceApp.infra.db_level import get_level_by_description, create_level
+from usersServiceApp.errors.genreError import existentGenreError, notExistentGenreError
+from usersServiceApp.errors.languageError import existentLanguageError, notExistentLanguageError
+from usersServiceApp.errors.levelError import existentLevelError, notExistentLevelError
+from usersServiceApp.infra.db_genre import create_genre, get_genre_by_description, get_genre_by_id
+from usersServiceApp.infra.db_language import get_language_by_description, create_language, get_language_by_id
+from usersServiceApp.infra.db_level import get_level_by_description, create_level, get_level_by_id
+
+
+def validate_genre_by_id(id_genre):
+    if get_genre_by_id(id_genre) is None:
+        raise notExistentGenreError
+
+
+def validate_language_by_id(id_language):
+    if get_language_by_id(id_language) is None:
+        raise notExistentLanguageError
+
+
+def validate_level_by_id(id_level):
+    if get_level_by_id(id_level) is None:
+        raise notExistentLevelError
 
 
 def validate_user_fields(post_data):
-    return True
+    validate_genre_by_id(post_data['genre'])
+    validate_language_by_id(post_data['native_language'])
+    validate_language_by_id(post_data['practice_language'])
+    validate_level_by_id(post_data['actual_level'])
 
 
 def validate_existent_genre(description):

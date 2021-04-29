@@ -9,3 +9,10 @@ class existentGenreError(usersException):
         self.error_code = 403
         super().__init__(self.message, self.error_code)
 
+
+class notExistentGenreError(usersException):
+    def __init__(self, message="Genre doesn't exists."):
+        current_app.logger.error("Genre doesn't exists.")
+        self.message = message
+        self.error_code = 403
+        super().__init__(self.message, self.error_code)

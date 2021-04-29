@@ -11,3 +11,7 @@ def create_level(post_data):
 
 def get_level_by_description(description):
     return level.query.filter(level.level_description.ilike(description)).first()
+
+
+def get_level_by_id(id_level):
+    return level.query.filter_by(id_level=id_level).first()
