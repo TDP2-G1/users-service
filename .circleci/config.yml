@@ -59,6 +59,7 @@ jobs:
             heroku container:push web -a tdp2-tp1-users-service
             heroku container:release web -a tdp2-tp1-users-service
 
+
 workflows:
   main:
     jobs:
