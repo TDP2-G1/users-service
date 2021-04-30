@@ -39,7 +39,6 @@ def create_app(my_config=None):
     @app.before_first_request
     def create_db():
         database.create_tables()
-        model.insert_initial_values()
 
     app.register_blueprint(bp_homeinfo)
     app.register_blueprint(bp_user)

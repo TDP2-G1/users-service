@@ -2,9 +2,8 @@ from flask import request
 from flasgger.utils import swag_from
 from flask import Blueprint
 
-from usersServiceApp.core.register_logic import validate_user_fields
+from usersServiceApp.core.register_logic import validate_user_fields, register_user
 from usersServiceApp.errors.usersException import usersException
-from usersServiceApp.infra.db_user import create_user
 from flask import jsonify
 
 bp_user = Blueprint('user', __name__, url_prefix='/user/')
@@ -82,18 +81,44 @@ def register_new_user_api():
     """
     try:
         post_data = request.get_json()
-        validate_user_fields(post_data)
-        _user = create_user(post_data)
+        _user, _spoken_languages, _profile_pictures = register_user(post_data)
+        languages = format_languages(_spoken_languages)
+        pictures = format_pictures(_profile_pictures)
     except usersException as e:
         return jsonify({'Error': e.message}), e.error_code
-    return jsonify({'id_user': _user.id_user, "actual_level": _user.actual_level,
-                    "birth_date": _user.birth_date,
+    return jsonify({'id_user': _user.id_user,
+                    "birth_date": _user.birth_date.strftime("%d/%m/%Y"),
                     "email": _user.email,
                     "first_name": _user.first_name,
                     "last_name": _user.last_name,
                     "genre": _user.genre,
-                    "native_language": _user.native_language,
-                    "practice_language": _user.practice_language,
                     "profile_picture": "string",
-                    "topics_descriptions": _user.topics_descriptions
+                    "topics_descriptions": _user.topics_descriptions,
+                    "languages": languages,
+                    "pictures": pictures
                     }), 200
+
+
+def format_languages(_spoken_languages):
+    languages = []
+    for _language in _spoken_languages:
+        _language = {
+            'id_user': _language.id_user,
+            'id_language': _language.id_language,
+            'id_level': _language.id_level,
+            'is_native': _language.is_native
+        }
+        languages.append(_language)
+    return languages
+
+
+def format_pictures(_profile_pictures):
+    pictures = []
+    for _picture in _profile_pictures:
+        _picture = {
+            'id_user': _picture.id_user,
+            'id_picture': _picture.id_picture,
+            'uel': _picture.url_picture
+        }
+        pictures.append(_picture)
+    return pictures
