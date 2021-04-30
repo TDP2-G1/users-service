@@ -6,6 +6,8 @@ from usersServiceApp.core.register_logic import validate_and_create_genre
 from usersServiceApp.errors.usersException import usersException
 from flask import jsonify
 
+from usersServiceApp.infra.db_genre import get_all_genres
+
 bp_genre = Blueprint('genre', __name__, url_prefix='/genre/')
 
 
@@ -49,3 +51,32 @@ def new_genre():
     except usersException as e:
         return jsonify({'Error': e.message}), e.error_code
     return jsonify({'id': genre_created.id_genre, "genre_description": genre_created.genre_description}), 200
+
+
+@bp_genre.route("/", methods=['GET'])
+@swag_from(methods=['GET'])
+def all_genres():
+    """
+    Get all genres
+    ---
+    tags:
+      - genre
+    consumes:
+      - application/json
+    parameters:
+      - name: body
+        in: body
+        required: false
+    responses:
+      200:
+        description: A list of genres created
+    """
+    genres = get_all_genres()
+    list_genres = []
+    for genre in genres:
+        lang = {
+            'id_genre': genre.id_genre,
+            "genre_description": genre.genre_description
+        }
+        list_genres.append(lang)
+    return jsonify(list_genres), 200

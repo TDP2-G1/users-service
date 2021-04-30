@@ -8,3 +8,7 @@ def create_user(post_data):
     create_in_db(_user)
     user_created = user.query.filter_by(email=_user.email).first()
     return user_created
+
+
+def get_all_users():
+    return user.query.all()

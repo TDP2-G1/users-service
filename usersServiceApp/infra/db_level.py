@@ -15,3 +15,7 @@ def get_level_by_description(description):
 
 def get_level_by_id(id_level):
     return level.query.filter_by(id_level=id_level).first()
+
+
+def get_all_levels():
+    return level.query.all()

@@ -6,6 +6,8 @@ from usersServiceApp.core.register_logic import validate_user_fields, register_u
 from usersServiceApp.errors.usersException import usersException
 from flask import jsonify
 
+from usersServiceApp.infra.db_user import get_all_users
+
 bp_user = Blueprint('user', __name__, url_prefix='/user/')
 
 
@@ -122,3 +124,37 @@ def format_pictures(_profile_pictures):
         }
         pictures.append(_picture)
     return pictures
+
+
+@bp_user.route("/", methods=['GET'])
+@swag_from(methods=['GET'])
+def all_users():
+    """
+    Get all users
+    ---
+    tags:
+      - user
+    consumes:
+      - application/json
+    parameters:
+      - name: body
+        in: body
+        required: false
+    responses:
+      200:
+        description: A list of users created
+    """
+    users = get_all_users()
+    list_users = []
+    for _user in users:
+        lang = {'id_user': _user.id_user,
+                "birth_date": _user.birth_date.strftime("%d/%m/%Y"),
+                "email": _user.email,
+                "first_name": _user.first_name,
+                "last_name": _user.last_name,
+                "genre": _user.genre,
+                "profile_picture": "string",
+                "topics_descriptions": _user.topics_descriptions,
+                }
+        list_users.append(lang)
+    return jsonify(list_users), 200

@@ -29,3 +29,7 @@ def add_spoken_language_practice(id_user, id_language, id_level):
 
 def get_spoken_languages(id_user):
     return spoken_language.query.filter_by(id_user=id_user).all()
+
+
+def get_all_languages():
+    return language.query.all()

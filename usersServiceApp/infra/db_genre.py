@@ -15,3 +15,7 @@ def get_genre_by_description(description):
 
 def get_genre_by_id(id_genre):
     return genre.query.filter_by(id_genre=id_genre).first()
+
+
+def get_all_genres():
+    return genre.query.all()
