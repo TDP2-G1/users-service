@@ -15,8 +15,16 @@ class user(db.Model):
         return f"user: {self.id_user}"
 
 
+class fb_user(db.Model):
+    fb_user_id = db.Column(db.String(250), primary_key=True, unique=True)
+    id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'))
+
+    def __repr__(self):
+        return f"user: {self.id_user}"
+
+
 class profile_picture(db.Model):
-    id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
+    id_user = db.Column(db.Integer, primary_key=True, nullable=False)
     id_picture = db.Column(db.Integer, primary_key=True, autoincrement=True)
     url_picture = db.Column(db.String(200), nullable=False)
 

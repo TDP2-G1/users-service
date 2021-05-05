@@ -1,6 +1,6 @@
 import json
 
-from tests import VALID_REGISTER, INVALID_MINOR_REGISTER
+from tests import VALID_REGISTER, INVALID_MINOR_REGISTER, INVALID_REGISTER_DATE_FORMAT
 from tests.test_genre_creation import genre_creation
 from tests.test_language_creation import language_creation
 from tests.test_level_creation import level_creation
@@ -64,4 +64,16 @@ class FlaskTest(unittest.TestCase):
         status_code = response.status_code
         data = json.loads(response.get_data(as_text=True))
         self.assertEqual(data['Error'], "Age must be at least 16.")
+        self.assertEqual(status_code, 403)
+
+
+    def test_invalid_user_register_date_format(self):
+        tester = create_app().test_client(self)
+        language_creation(tester, 'English')
+        genre_creation(tester, 'Male')
+        level_creation(tester, 'Advanced')
+        response = tester.post("/user/", data=INVALID_REGISTER_DATE_FORMAT, content_type='application/json')
+        status_code = response.status_code
+        data = json.loads(response.get_data(as_text=True))
+        self.assertEqual(data['Error'], "DATE Format must be dd/mm/YYYY.")
         self.assertEqual(status_code, 403)

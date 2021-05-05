@@ -1,5 +1,5 @@
 from usersServiceApp.infra import create_in_db
-from usersServiceApp.model import user
+from usersServiceApp.model import user, fb_user
 
 
 def create_user(post_data):
@@ -10,5 +10,18 @@ def create_user(post_data):
     return user_created
 
 
+def get_user_by_id(id_user):
+    return user.query.filter_by(id_user=id_user).first()
+
+
 def get_all_users():
     return user.query.all()
+
+
+def add_fb_user(fb_user_id, id_user):
+    _fb_user = fb_user(fb_user_id=fb_user_id, id_user=id_user)
+    create_in_db(_fb_user)
+
+
+def get_fb_user_by_fb_user_id(fb_user_id):
+    return fb_user.query.filter_by(fb_user_id=fb_user_id).first()

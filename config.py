@@ -4,6 +4,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config(object):
+    RESTART = False
+    if os.environ.get('RESTART') is not None:
+        RESTART = os.environ.get('RESTART')
     DEBUG = False
     TESTING = False
     CSRF_ENABLED = True
