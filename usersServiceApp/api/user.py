@@ -88,6 +88,7 @@ def register_new_user_api():
     """
     try:
         post_data = request.get_json()
+        post_data['fb_user_id'] = str(post_data['fb_user_id'])
         _user, _spoken_languages, _profile_pictures = register_user(post_data)
         formated_languages = format_languages(_spoken_languages)
         formated_pictures = format_pictures(_profile_pictures)
@@ -142,11 +143,11 @@ def format_pictures(_profile_pictures):
     return pictures
 
 
-@bp_user.route("/<int:user_id>", methods=['GET'])
+@bp_user.route("/", methods=['GET'])
 @swag_from(methods=['GET'])
 def all_users(user_id=None):
     """
-    Get all users (but me optional)
+    Get all users
     ---
     tags:
       - user
@@ -162,7 +163,6 @@ def all_users(user_id=None):
         description: A list of users created
     """
     users = get_all_users()
-    print(users)
     list_users = []
     for _user in users:
         if _user.id_user != user_id:
@@ -203,8 +203,7 @@ def get_user_if_registered(fb_user_id):
                 description: last name of the created user
     """
     try:
-        print('hi')
-        _user = get_user_info_by_fb_user_id(fb_user_id)
+        _user = get_user_info_by_fb_user_id(str(fb_user_id))
         formated_user = format_user(_user)
     except usersException as e:
         return jsonify({'Error': e.message}), e.error_code

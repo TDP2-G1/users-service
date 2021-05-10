@@ -19,7 +19,7 @@ def get_all_users():
 
 
 def add_fb_user(fb_user_id, id_user):
-    _fb_user = fb_user(fb_user_id=fb_user_id, id_user=id_user)
+    _fb_user = fb_user(fb_user_id=str(fb_user_id), id_user=id_user)
     create_in_db(_fb_user)
 
 
