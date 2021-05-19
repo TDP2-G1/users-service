@@ -40,3 +40,11 @@ class DateFormatError(usersException):
         self.message = message
         self.error_code = 403
         super().__init__(self.message, self.error_code)
+
+
+class UserNotExistsError(usersException):
+    def __init__(self, message="User ID does not exist."):
+        current_app.logger.error("User ID does not exist.")
+        self.message = message
+        self.error_code = 404
+        super().__init__(self.message, self.error_code)
