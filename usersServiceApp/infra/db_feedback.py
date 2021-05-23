@@ -1,4 +1,5 @@
-from sqlalchemy import desc
+from sqlalchemy import desc, func, select
+from sqlalchemy.orm import session
 
 from usersServiceApp.infra import create_in_db
 from usersServiceApp.model import feedback
@@ -22,6 +23,10 @@ def get_feedback_by_id(id_feedback):
 
 def get_user_received_feedbacks_ordered(id_user):
     return feedback.query.filter_by(id_user_receiver=id_user).order_by(desc(feedback.date_created)).all()
+
+
+def get_user_amount_received_feedbacks(id_user):
+    return len(feedback.query.filter_by(id_user_receiver=id_user).all())
 
 
 def get_all_feedbacks():
