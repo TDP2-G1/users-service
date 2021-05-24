@@ -2,22 +2,22 @@ from flask import request
 from flasgger.utils import swag_from
 from flask import Blueprint
 
-from usersServiceApp.core.feedback_logic import validate_and_create_feedback, get_feedbacks_info
+from usersServiceApp.core.follower_logic import validate_and_create_follower, get_followers
 from usersServiceApp.errors.usersException import usersException
 from flask import jsonify
 
-bp_feedback = Blueprint('feedback', __name__, url_prefix='/feedback/')
+bp_follower = Blueprint('follower', __name__, url_prefix='/follower/')
 
 
-@bp_feedback.route("/", methods=['POST'])
+@bp_follower.route("/", methods=['POST'])
 @swag_from(methods=['POST'])
-def new_feedback():
+def new_follower():
     """
-    Register a new feedback
+    Register a new follower
     The form has to be complete.
     ---
     tags:
-      - feedback
+      - follower
     consumes:
       - application/json
     parameters:
@@ -26,48 +26,41 @@ def new_feedback():
         required: true
         schema:
             required:
-              - id_user_receiver
-              - id_user_giver
-              - feedback_description
+              - id_user_1
+              - id_user_2
             properties:
-              id_user_receiver:
+              id_user_1:
                 type: integer
-                description: id_user_receiver
-              id_user_giver:
+                description: id_user_1
+              id_user_2:
                 type: integer
-                description: id_user_giver
-              feedback_description:
-                type: string
-                description: description of the new feedback.
+                description: id_user_2
     responses:
       200:
         description: A successful profile creation
         schema:
           properties:
-              feedback_description:
-                type: string
-                description:  description of the new feedback.
               id:
                 type: integer
-                description: Unique identifier of the created feedback
+                description: Unique identifier of the created follower
     """
     try:
         post_data = request.get_json()
-        feedback_created = validate_and_create_feedback(post_data)
+        validate_and_create_follower(post_data)
     except usersException as e:
         return jsonify({'Error': e.message}), e.error_code
     return jsonify(
-        {'id': feedback_created.id_feedback, "feedback_description": feedback_created.feedback_description}), 200
+        {'id_1': post_data['id_user_1'], 'id_2': post_data['id_user_2']}), 200
 
 
-@bp_feedback.route("/<int:user_id>", methods=['GET'])
+@bp_follower.route("/<int:user_id>", methods=['GET'])
 @swag_from(methods=['GET'])
 def get_user_if_registered(user_id):
     """
-    Get user if registered
+    Get users followers
     ---
     tags:
-      - feedback
+      - follower
     parameters:
       - in: path
         name: user_id
@@ -81,12 +74,9 @@ def get_user_if_registered(user_id):
               id:
                 type: integer
                 description: Unique identifier of the created user
-              first_name:
-                type: string
-                description: first name of the created user
     """
     try:
-        _feedbacks = get_feedbacks_info(user_id)
+        _followers = get_followers(user_id)
     except usersException as e:
         return jsonify({'Error': e.message}), e.error_code
-    return jsonify(_feedbacks), 200
+    return jsonify(_followers), 200

@@ -9,6 +9,7 @@ import usersServiceApp.commands
 import usersServiceApp.database
 import usersServiceApp.model
 from usersServiceApp.api.feedback import bp_feedback
+from usersServiceApp.api.follower import bp_follower
 from usersServiceApp.api.genre import bp_genre
 from usersServiceApp.api.home_info import bp_homeinfo
 from usersServiceApp.api.language import bp_language
@@ -37,6 +38,7 @@ def create_app(my_config=None):
     CORS(bp_language)  # enable CORS on the bp_stinfo blue print
     CORS(bp_level)  # enable CORS on the bp_stinfo blue print
     CORS(bp_feedback)
+    CORS(bp_follower)
 
     @app.before_first_request
     def create_db():
@@ -48,6 +50,7 @@ def create_app(my_config=None):
     app.register_blueprint(bp_language)
     app.register_blueprint(bp_level)
     app.register_blueprint(bp_feedback)
+    app.register_blueprint(bp_follower)
 
     # setup swagger
     swagger = Swagger(app)

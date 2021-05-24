@@ -32,3 +32,10 @@ VALID_FEEDBACK = json.dumps(
         "id_user_giver": 2,
         "id_user_receiver": 1
     })
+
+
+VALID_FOLLOWER = json.dumps(
+    {
+        "id_user_1": 2,
+        "id_user_2": 1
+    })
