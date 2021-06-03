@@ -29,3 +29,14 @@ class FlaskTest(unittest.TestCase):
         data = json.loads(response.get_data(as_text=True))
         self.assertEqual(data['Error'], "language already exists in database.")
         self.assertEqual(status_code, 403)
+
+
+    def test_valid_language_creation(self):
+        tester = create_app().test_client(self)
+        response = language_creation(tester, 'Spanish')
+        status_code = response.status_code
+        response = tester.get("/language/", content_type='application/json')
+        data = json.loads(response.get_data(as_text=True))
+        self.assertEqual(data[0]['id_language'], 1)
+        self.assertEqual(data[0]['language_description'], "Spanish")
+        self.assertEqual(status_code, 200)

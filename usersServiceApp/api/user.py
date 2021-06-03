@@ -2,12 +2,14 @@ from flask import request
 from flasgger.utils import swag_from
 from flask import Blueprint
 
+from usersServiceApp.core.follower_logic import get_followers
 from usersServiceApp.core.register_logic import register_user,  \
     get_user_info_by_fb_user_id, get_languages, get_user_pictures
 from usersServiceApp.errors.usersException import usersException
 from flask import jsonify
 
-from usersServiceApp.infra.db_user import get_all_users
+from usersServiceApp.infra.db_feedback import get_user_amount_received_feedbacks
+from usersServiceApp.infra.db_user import get_all_users, get_fb_user_by_user_id
 
 bp_user = Blueprint('user', __name__, url_prefix='/user/')
 
@@ -103,6 +105,9 @@ def format_user(_user, languages=None, pictures=None):
         languages = format_languages(get_languages(_user.id_user))
     if pictures is None:
         pictures = format_pictures(get_user_pictures(_user.id_user))
+    amount_feedbacks = get_user_amount_received_feedbacks(_user.id_user)
+    my_fb_user_id = get_fb_user_by_user_id(_user.id_user).fb_user_id
+    _followers = get_followers(_user.id_user)
 
     _user = {'id_user': _user.id_user,
              "birth_date": _user.birth_date.strftime("%d/%m/%Y"),
@@ -113,7 +118,10 @@ def format_user(_user, languages=None, pictures=None):
              "profile_picture": "string",
              "topics_descriptions": _user.topics_descriptions,
              "languages": languages,
-             "pictures": pictures
+             "pictures": pictures,
+             "amount_feedbacks": amount_feedbacks,
+             "fb_user_id": my_fb_user_id,
+             "followers": _followers
              }
     return _user
 

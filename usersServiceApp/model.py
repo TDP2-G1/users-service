@@ -65,3 +65,22 @@ class level(db.Model):
     def __repr__(self):
         return f"level: {self.id_level}"
 
+
+class feedback(db.Model):
+    id_feedback = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+    id_user_receiver = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
+    id_user_giver = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
+    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+    feedback_description = db.Column(db.String(140), nullable=False)
+
+    def __repr__(self):
+        return f"feedback: {self.id_feedback}"
+
+
+class follower(db.Model):
+    id_user_followed = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
+    id_user_following = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
+    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+
+    def __repr__(self):
+        return f"follower: {self.id_user_following}"

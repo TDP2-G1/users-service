@@ -1,9 +1,12 @@
+import datetime
+
 from usersServiceApp.infra import create_in_db
 from usersServiceApp.model import user, fb_user
 
 
 def create_user(post_data):
-    _user = user(first_name=post_data['first_name'], last_name=post_data['last_name'], birth_date=post_data['birth_date'],
+    my_birth_date = datetime.datetime.strptime(post_data['birth_date'], "%d/%m/%Y")
+    _user = user(first_name=post_data['first_name'], last_name=post_data['last_name'], birth_date=my_birth_date,
                  email=post_data['email'], genre=post_data['genre'], topics_descriptions=post_data['topics_descriptions'])
     create_in_db(_user)
     user_created = user.query.filter_by(email=_user.email).first()
@@ -25,3 +28,7 @@ def add_fb_user(fb_user_id, id_user):
 
 def get_fb_user_by_fb_user_id(fb_user_id):
     return fb_user.query.filter_by(fb_user_id=fb_user_id).first()
+
+
+def get_fb_user_by_user_id(user_id):
+    return fb_user.query.filter_by(id_user=user_id).first()

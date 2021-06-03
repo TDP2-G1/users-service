@@ -29,3 +29,14 @@ class FlaskTest(unittest.TestCase):
         data = json.loads(response.get_data(as_text=True))
         self.assertEqual(data['Error'], "Genre already exists in database.")
         self.assertEqual(status_code, 403)
+
+
+    def test_valid_genre_creation_get(self):
+        tester = create_app().test_client(self)
+        response = genre_creation(tester, 'Female')
+        status_code = response.status_code
+        response = tester.get("/genre/", content_type='application/json')
+        data = json.loads(response.get_data(as_text=True))
+        self.assertEqual(data[0]['id_genre'], 1)
+        self.assertEqual(data[0]['genre_description'], "Female")
+        self.assertEqual(status_code, 200)
