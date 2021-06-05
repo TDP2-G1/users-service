@@ -5,6 +5,7 @@ from flask import Blueprint
 from usersServiceApp.core.follower_logic import get_followers
 from usersServiceApp.core.register_logic import register_user,  \
     get_user_info_by_fb_user_id, get_languages, get_user_pictures
+from usersServiceApp.core.report_logic import get_reports
 from usersServiceApp.errors.usersException import usersException
 from flask import jsonify
 
@@ -108,6 +109,7 @@ def format_user(_user, languages=None, pictures=None):
     amount_feedbacks = get_user_amount_received_feedbacks(_user.id_user)
     my_fb_user_id = get_fb_user_by_user_id(_user.id_user).fb_user_id
     _followers = get_followers(_user.id_user)
+    _reported_by = get_reports(_user.id_user)
 
     _user = {'id_user': _user.id_user,
              "birth_date": _user.birth_date.strftime("%d/%m/%Y"),
@@ -121,7 +123,8 @@ def format_user(_user, languages=None, pictures=None):
              "pictures": pictures,
              "amount_feedbacks": amount_feedbacks,
              "fb_user_id": my_fb_user_id,
-             "followers": _followers
+             "followers": _followers,
+             "reported_by": _reported_by
              }
     return _user
 
