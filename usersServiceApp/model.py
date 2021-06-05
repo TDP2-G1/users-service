@@ -84,3 +84,22 @@ class follower(db.Model):
 
     def __repr__(self):
         return f"follower: {self.id_user_following}"
+
+
+class report_type(db.Model):
+    id_report_type = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+    report_type_description = db.Column(db.String(80), nullable=False)
+
+    def __repr__(self):
+        return f"report_type: {self.id_report_type}"
+
+
+class report(db.Model):
+    id_report = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+    id_report_type = db.Column(db.Integer, db.ForeignKey('report_type.id_report_type'), primary_key=True, nullable=False)
+    id_user_reported = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
+    id_user_reported_by = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
+    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+
+    def __repr__(self):
+        return f"report: {self.id_report}"
