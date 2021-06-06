@@ -1,5 +1,7 @@
 import json
 
+from sqlalchemy import true
+
 VALID_REGISTER = json.dumps(
     {'fb_user_id': "u23y48298", 'first_name': 'Steven', 'last_name': 'Seagal', 'email': 'steven@seagal.com', 'genre': 1,
      'native_language': 1, 'practice_language': 1, 'actual_level': 1, 'birth_date': '10/04/1952',
@@ -41,4 +43,9 @@ VALID_REPORT = json.dumps(
         "id_report_type": 1,
         "id_user_reported": 1,
         "id_user_reported_by": 2
+    });
+
+VALID_DISABLED_ACCOUNT = json.dumps(
+    {
+        "is_disabled": True
     });
