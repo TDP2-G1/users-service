@@ -3,7 +3,8 @@ from usersServiceApp.errors.genreError import existentGenreError, notExistentGen
 from usersServiceApp.errors.languageError import existentLanguageError, notExistentLanguageError
 from usersServiceApp.errors.levelError import existentLevelError, notExistentLevelError
 from usersServiceApp.errors.usersError import AgeUnder16Error, FBUserAlreadyRegisteredError, FBUserNotRegisteredError, \
-    DateFormatError, UserNotExistsError
+    DateFormatError, UserNotExistsError, UserDisabledError
+from usersServiceApp.infra.db_disabled_account import get_user_last_status
 from usersServiceApp.infra.db_genre import create_genre, get_genre_by_description, get_genre_by_id
 from usersServiceApp.infra.db_language import get_language_by_description, create_language, get_language_by_id, \
     add_spoken_language_native, add_spoken_language_practice, get_spoken_languages
@@ -35,12 +36,20 @@ def validate_fb_user_not_registered(fb_user_id):
 def validate_fb_user_registered(fb_user_id):
     if get_fb_user_by_fb_user_id(fb_user_id) is None:
         raise FBUserNotRegisteredError
+    _disabled_status = get_user_last_status(get_user_id_by_fb_user_id(fb_user_id))
+    if _disabled_status is not None and _disabled_status.is_disabled is True:
+        raise UserDisabledError
 
 
 def get_user_info_by_fb_user_id(fb_user_id):
     validate_fb_user_registered(fb_user_id)
     _fb_user = get_fb_user_by_fb_user_id(fb_user_id)
     return get_user_by_id(_fb_user.id_user)
+
+
+def get_user_id_by_fb_user_id(fb_user_id):
+    _fb_user = get_fb_user_by_fb_user_id(fb_user_id)
+    return _fb_user.id_user
 
 
 def validate_user_id_exists(id_user):

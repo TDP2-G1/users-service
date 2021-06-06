@@ -103,3 +103,13 @@ class report(db.Model):
 
     def __repr__(self):
         return f"report: {self.id_report}"
+
+
+class disabled_account(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+    id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
+    is_disabled = db.Column(db.BOOLEAN, default=False, primary_key=True)
+    date_created = db.Column(db.DateTime, default=db.func.current_timestamp(), primary_key=True)
+
+    def __repr__(self):
+        return f"disabled_account: {self.id_disabled_account}"

@@ -73,7 +73,6 @@ def all_report_types():
         description: A list of report_types created
     """
     report_types = get_all_report_types()
-    print(report_types)
     list_report_types = []
     for report_type in report_types:
         lang = {
