@@ -39,6 +39,9 @@ def new_report():
               id_user_reported_by:
                 type: integer
                 description: id_user_reported_by
+              other_text:
+                type: String
+                description: text for other report
     responses:
       200:
         description: A successful profile creation

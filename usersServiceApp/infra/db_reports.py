@@ -1,5 +1,5 @@
 from usersServiceApp.infra import create_in_db
-from usersServiceApp.model import report, report_type
+from usersServiceApp.model import report, report_type, report_text
 
 
 def create_report_type(post_data):
@@ -24,7 +24,9 @@ def create_report(id_report_type, id_user_reported, id_user_reported_by):
     _report = report(id_report_type=id_report_type, id_user_reported=id_user_reported,
                      id_user_reported_by=id_user_reported_by)
     create_in_db(_report)
-    return True
+    _report_created = report.query.filter_by(id_report_type=id_report_type, id_user_reported=id_user_reported,
+                                             id_user_reported_by=id_user_reported_by).first()
+    return _report_created
 
 
 def get_report_by_user_reported(id_user_reported):
@@ -37,3 +39,14 @@ def get_report_by_id(id_report):
 
 def get_all_reports():
     return report.query.all()
+
+
+def create_report_text(id_report, text):
+    _report_text = report_text(id_report=id_report, report_text=text)
+    create_in_db(_report_text)
+    return True
+
+
+def get_text_report_by_id(id_report):
+    return report_text.query.filter_by(id_report=id_report).first()
+

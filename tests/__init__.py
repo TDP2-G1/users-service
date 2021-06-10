@@ -43,7 +43,15 @@ VALID_REPORT = json.dumps(
         "id_report_type": 1,
         "id_user_reported": 1,
         "id_user_reported_by": 2
-    });
+    })
+
+VALID_OTHER_REPORT = json.dumps(
+    {
+        "id_report_type": 1,
+        "id_user_reported": 1,
+        "id_user_reported_by": 2,
+        "other_text": "Cosas feas"
+    })
 
 VALID_DISABLED_ACCOUNT = json.dumps(
     {

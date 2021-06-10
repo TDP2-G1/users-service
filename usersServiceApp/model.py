@@ -95,7 +95,7 @@ class report_type(db.Model):
 
 
 class report(db.Model):
-    id_report = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+    id_report = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True, unique=True)
     id_report_type = db.Column(db.Integer, db.ForeignKey('report_type.id_report_type'), primary_key=True, nullable=False)
     id_user_reported = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
     id_user_reported_by = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
@@ -113,3 +113,12 @@ class disabled_account(db.Model):
 
     def __repr__(self):
         return f"disabled_account: {self.id_disabled_account}"
+
+
+class report_text(db.Model):
+    id_report = db.Column(db.Integer, db.ForeignKey('report.id_report'), primary_key=True, nullable=False, unique=True)
+    report_text = db.Column(db.String(50), nullable=False)
+    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+
+    def __repr__(self):
+        return f"report_text: {self.id_report}"
