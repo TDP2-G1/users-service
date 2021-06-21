@@ -57,3 +57,10 @@ VALID_DISABLED_ACCOUNT = json.dumps(
     {
         "is_disabled": True
     });
+
+
+VALID_BLOCK = json.dumps(
+    {
+        "id_user_blocker": 2,
+        "id_user_blocked": 1
+    })

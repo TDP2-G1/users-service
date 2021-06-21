@@ -122,3 +122,12 @@ class report_text(db.Model):
 
     def __repr__(self):
         return f"report_text: {self.id_report}"
+
+
+class block(db.Model):
+    id_user_blocker = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
+    id_user_blocked = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
+    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+
+    def __repr__(self):
+        return f"id_user_blocker: {self.id_user_blocker, self.id_user_blocked, self.date_created}"

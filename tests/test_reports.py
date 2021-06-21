@@ -60,7 +60,6 @@ class FlaskTest(unittest.TestCase):
         response = tester.get("/report/1", content_type='application/json')
         status_code = response.status_code
         data = json.loads(response.get_data(as_text=True))
-        print(data)
         self.assertEqual(data[0]['id_report'], 1)
         self.assertEqual(status_code, 200)
 
