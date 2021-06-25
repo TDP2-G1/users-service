@@ -2,6 +2,7 @@ from flask import request
 from flasgger.utils import swag_from
 from flask import Blueprint
 
+from usersServiceApp.core.block_logic import get_blocks
 from usersServiceApp.core.disabled_account_logic import is_disabled, validate_and_create_disabled_account
 from usersServiceApp.core.follower_logic import get_followers
 from usersServiceApp.core.register_logic import register_user, \
@@ -10,6 +11,7 @@ from usersServiceApp.core.report_logic import get_reports
 from usersServiceApp.errors.usersException import usersException
 from flask import jsonify
 
+from usersServiceApp.infra.db_block import get_blocked_by_id, get_blocks_by_id
 from usersServiceApp.infra.db_disabled_account import create_disabled_account
 from usersServiceApp.infra.db_feedback import get_user_amount_received_feedbacks
 from usersServiceApp.infra.db_user import get_all_users, get_fb_user_by_user_id
@@ -113,6 +115,7 @@ def format_user(_user, languages=None, pictures=None):
     _followers = get_followers(_user.id_user)
     _reported_by = get_reports(_user.id_user)
     _is_disabled = is_disabled(_user.id_user)
+    _blocked, _blocked_by, another = get_blocks(_user.id_user)
 
     _user = {'id_user': _user.id_user,
              "birth_date": _user.birth_date.strftime("%d/%m/%Y"),
@@ -128,7 +131,9 @@ def format_user(_user, languages=None, pictures=None):
              "fb_user_id": my_fb_user_id,
              "followers": _followers,
              "reported_by": _reported_by,
-             "is_disabled": _is_disabled
+             "is_disabled": _is_disabled,
+             "blocked_by": _blocked_by,
+             "blocked": _blocked
              }
     return _user
 

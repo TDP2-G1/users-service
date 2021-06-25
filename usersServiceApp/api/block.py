@@ -55,7 +55,7 @@ def new_block():
 
 @bp_block.route("/<int:user_id>", methods=['GET'])
 @swag_from(methods=['GET'])
-def get_user_if_registered(user_id):
+def get_blocks_by_id(user_id):
     """
     Get users blocks
     ---
@@ -76,7 +76,7 @@ def get_user_if_registered(user_id):
                 description: Unique identifier of the created user
     """
     try:
-        _blocks = get_blocks(user_id)
+        _blocked, _blocked_by, _blocks = get_blocks(user_id)
     except usersException as e:
         return jsonify({'Error': e.message}), e.error_code
-    return jsonify(_blocks), 200
+    return jsonify({"blocked": _blocked, "blocked_by": _blocked_by}), 200

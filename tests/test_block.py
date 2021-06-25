@@ -48,13 +48,14 @@ class FlaskTest(unittest.TestCase):
         response = tester.get("/block/1", content_type='application/json')
         status_code = response.status_code
         data = json.loads(response.get_data(as_text=True))
-        print("aaaa")
-        print(data)
-        self.assertEqual(data[0], 2)
+        self.assertEqual(data['blocked'][0], 2)
         self.assertEqual(status_code, 200)
         response = tester.get("/block/2", content_type='application/json')
         status_code = response.status_code
         data = json.loads(response.get_data(as_text=True))
-        print(data)
-        self.assertEqual(data[0], 1)
+        self.assertEqual(data['blocked_by'][0], 1)
+        self.assertEqual(status_code, 200)
+        response = tester.get("/user/", content_type='application/json')
+        status_code = response.status_code
+        data = json.loads(response.get_data(as_text=True))
         self.assertEqual(status_code, 200)

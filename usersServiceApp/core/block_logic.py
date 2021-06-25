@@ -10,14 +10,13 @@ def validate_and_create_block(post_data):
 
 def get_blocks(id_user):
     blocks = get_blocks_by_id(id_user)
-    print(blocks)
     blocked_by = get_blocked_by_id(id_user)
-    print(blocked_by)
-    _blocks = []
+    _blocked = []
+    _blocked_by = []
     for block in blocks:
         _user_ = block.id_user_blocker
-        _blocks.append(_user_)
+        _blocked.append(_user_)
     for block in blocked_by:
         _user_ = block.id_user_blocked
-        _blocks.append(_user_)
-    return list(set(_blocks))
+        _blocked_by.append(_user_)
+    return _blocked, _blocked_by, list(set(_blocked + _blocked_by))
