@@ -2,7 +2,7 @@ from flask import request
 from flasgger.utils import swag_from
 from flask import Blueprint
 
-from usersServiceApp.core.block_logic import validate_and_create_block, get_blocks
+from usersServiceApp.core.block_logic import validate_and_create_block, get_blocks, get_detailed_blocks
 from usersServiceApp.errors.usersException import usersException
 from flask import jsonify
 
@@ -76,7 +76,7 @@ def get_blocks_by_id(user_id):
                 description: Unique identifier of the created user
     """
     try:
-        _blocked, _blocked_by, _blocks = get_blocks(user_id)
+        _blocked, _blocked_by = get_detailed_blocks(user_id)
     except usersException as e:
         return jsonify({'Error': e.message}), e.error_code
     return jsonify({"blocked": _blocked, "blocked_by": _blocked_by}), 200
