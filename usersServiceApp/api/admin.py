@@ -56,7 +56,6 @@ def register_new_admin_api():
         token = validate_and_create_admin(post_data['email'], post_data['password'], post_data['first_name'],
                                           post_data['last_name'])
     except usersException as e:
-        print(e)
         return jsonify({'Error': e.message}), e.error_code
     return jsonify({'token': token}), 200
 

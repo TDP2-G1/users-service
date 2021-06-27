@@ -16,3 +16,19 @@ class registrationAdminError(usersException):
         self.message = message
         self.error_code = 403
         super().__init__(self.message, self.error_code)
+
+
+class notExistentAdminError(usersException):
+    def __init__(self, message="The user doesn't exists."):
+        current_app.logger.error("The user doesn't exists.")
+        self.message = message
+        self.error_code = 404
+        super().__init__(self.message, self.error_code)
+
+
+class mailTakenAdminError(usersException):
+    def __init__(self, message="The email for the registration is already taken."):
+        current_app.logger.error("The email for the registration is already taken.")
+        self.message = message
+        self.error_code = 403
+        super().__init__(self.message, self.error_code)

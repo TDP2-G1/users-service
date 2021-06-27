@@ -64,3 +64,20 @@ VALID_BLOCK = json.dumps(
         "id_user_blocker": 2,
         "id_user_blocked": 1
     })
+
+
+VALID_ADMIN_REGISTER = json.dumps(
+    {'first_name': 'Steven', 'last_name': 'Seagal', 'email': 'steven@seagal.com', 'password': 'HateJCVannDamme'
+     })
+
+INVALID_ADMIN_REGISTER = json.dumps(
+    {'first_name': 'Steven', 'last_name': '', 'email': 'steven@seagal.com', 'password': 'HateJCVannDamme'
+     })
+
+
+VALID_ADMIN_LOGIN = json.dumps(
+    {'email': 'steven@seagal.com', 'password': 'HateJCVannDamme'})
+
+
+INVALID_ADMIN_LOGIN = json.dumps(
+    {'email': 'steven@seagal.com', 'password': 'LoveJCVannDamme'})
