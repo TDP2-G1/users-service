@@ -1,12 +1,20 @@
 from usersServiceApp.core.register_logic import validate_user_id_exists
-from usersServiceApp.infra.db_block import create_block, get_blocks_by_id, get_blocked_by_id
+from usersServiceApp.infra.db_block import create_block, get_blocks_by_id, get_blocked_by_id, delete_block, block_exists
 from usersServiceApp.infra.db_user import get_user_by_id
 
 
 def validate_and_create_block(post_data):
     validate_user_id_exists(post_data['id_user_blocker'])
     validate_user_id_exists(post_data['id_user_blocked'])
-    create_block(post_data['id_user_blocker'], post_data['id_user_blocked'])
+    if not block_exists(post_data['id_user_blocker'], post_data['id_user_blocked']):
+        create_block(post_data['id_user_blocker'], post_data['id_user_blocked'])
+
+
+def validate_and_delete_block(post_data):
+    validate_user_id_exists(post_data['id_user_blocker'])
+    validate_user_id_exists(post_data['id_user_blocked'])
+    if block_exists(post_data['id_user_blocker'], post_data['id_user_blocked']):
+        delete_block(post_data['id_user_blocker'], post_data['id_user_blocked'])
 
 
 def get_blocks(id_user):

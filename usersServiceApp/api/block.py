@@ -2,7 +2,8 @@ from flask import request
 from flasgger.utils import swag_from
 from flask import Blueprint
 
-from usersServiceApp.core.block_logic import validate_and_create_block, get_blocks, get_detailed_blocks
+from usersServiceApp.core.block_logic import validate_and_create_block, get_blocks, get_detailed_blocks, \
+    validate_and_delete_block
 from usersServiceApp.errors.usersException import usersException
 from flask import jsonify
 
@@ -28,6 +29,7 @@ def new_block():
             required:
               - id_user_blocker
               - id_user_blocked
+              - status_enabled
             properties:
               id_user_blocker:
                 type: integer
@@ -35,6 +37,9 @@ def new_block():
               id_user_blocked:
                 type: integer
                 description: id_user_blocked
+              status_enabled:
+                type: boolean
+                description: status.
     responses:
       200:
         description: A successful profile creation
@@ -46,7 +51,10 @@ def new_block():
     """
     try:
         post_data = request.get_json()
-        validate_and_create_block(post_data)
+        if post_data['status_enabled']:
+            validate_and_create_block(post_data)
+        if not post_data['status_enabled']:
+            validate_and_delete_block(post_data)
     except usersException as e:
         return jsonify({'Error': e.message}), e.error_code
     return jsonify(

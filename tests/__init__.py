@@ -62,5 +62,14 @@ VALID_DISABLED_ACCOUNT = json.dumps(
 VALID_BLOCK = json.dumps(
     {
         "id_user_blocker": 2,
-        "id_user_blocked": 1
+        "id_user_blocked": 1,
+        "status_enabled": True
+    })
+
+
+VALID_UNBLOCK = json.dumps(
+    {
+        "id_user_blocker": 2,
+        "id_user_blocked": 1,
+        "status_enabled": False
     })
