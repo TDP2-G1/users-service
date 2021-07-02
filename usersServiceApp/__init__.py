@@ -8,6 +8,7 @@ from flask_cors import CORS
 import usersServiceApp.commands
 import usersServiceApp.database
 import usersServiceApp.model
+from usersServiceApp.api.admin import bp_admin
 from usersServiceApp.api.block import bp_block
 from usersServiceApp.api.feedback import bp_feedback
 from usersServiceApp.api.follower import bp_follower
@@ -45,6 +46,7 @@ def create_app(my_config=None):
     CORS(bp_report_type)
     CORS(bp_report)
     CORS(bp_block)
+    CORS(bp_admin)
 
     @app.before_first_request
     def create_db():
@@ -60,6 +62,7 @@ def create_app(my_config=None):
     app.register_blueprint(bp_report_type)
     app.register_blueprint(bp_report)
     app.register_blueprint(bp_block)
+    app.register_blueprint(bp_admin)
 
     # setup swagger
     swagger = Swagger(app)

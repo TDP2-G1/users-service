@@ -131,3 +131,16 @@ class block(db.Model):
 
     def __repr__(self):
         return f"id_user_blocker: {self.id_user_blocker, self.id_user_blocked, self.date_created}"
+
+
+class admin(db.Model):
+
+    id_admin = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    first_name = db.Column(db.String(80), nullable=False)
+    last_name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(255))
+    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+
+    def __repr__(self):
+        return f"admin: {self.email}"
