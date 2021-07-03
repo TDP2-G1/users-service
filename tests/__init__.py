@@ -85,3 +85,18 @@ VALID_ADMIN_LOGIN = json.dumps(
 
 INVALID_ADMIN_LOGIN = json.dumps(
     {'email': 'steven@seagal.com', 'password': 'LoveJCVannDamme'})
+
+INVALID_USER_STATUS_1 = json.dumps(
+    {'id_user': 1, 'user_status': ''})
+
+INVALID_USER_STATUS_2 = json.dumps(
+    {'id_user': 1})
+
+VALID_USER_STATUS_1 = json.dumps(
+    {'id_user': 1, 'user_status': 'Busy'})
+
+VALID_USER_STATUS_2 = json.dumps(
+    {'id_user': 1, 'user_status': 'offline'})
+
+VALID_USER_STATUS_3 = json.dumps(
+    {'id_user': 1, 'user_status': 'oNlinE'})

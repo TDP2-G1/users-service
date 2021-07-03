@@ -115,6 +115,15 @@ class disabled_account(db.Model):
         return f"disabled_account: {self.id_disabled_account}"
 
 
+class user_status(db.Model):
+    id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
+    user_status = db.Column(db.String(80), nullable=False, primary_key=True)
+    date_created = db.Column(db.DateTime, default=db.func.current_timestamp(), primary_key=True)
+
+    def __repr__(self):
+        return f"user_status: {self.user_status}"
+
+
 class report_text(db.Model):
     id_report = db.Column(db.Integer, db.ForeignKey('report.id_report'), primary_key=True, nullable=False, unique=True)
     report_text = db.Column(db.String(50), nullable=False)

@@ -12,5 +12,5 @@ def create_disabled_account(post_data):
     return disabled_account_created
 
 
-def get_user_last_status(id_user):
+def get_user_last_account_status(id_user):
     return disabled_account.query.filter_by(id_user=id_user).order_by(desc(disabled_account.date_created)).first()

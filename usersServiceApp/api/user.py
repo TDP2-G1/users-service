@@ -8,6 +8,7 @@ from usersServiceApp.core.follower_logic import get_followers
 from usersServiceApp.core.register_logic import register_user, \
     get_user_info_by_fb_user_id, get_languages, get_user_pictures
 from usersServiceApp.core.report_logic import get_reports
+from usersServiceApp.core.user_status_logic import get_user_last_status_logic, validate_and_create_user_status
 from usersServiceApp.errors.usersException import usersException
 from flask import jsonify
 
@@ -116,6 +117,7 @@ def format_user(_user, languages=None, pictures=None):
     _reported_by = get_reports(_user.id_user)
     _is_disabled = is_disabled(_user.id_user)
     _blocked, _blocked_by, another = get_blocks(_user.id_user)
+    _user_status = get_user_last_status_logic(_user.id_user)
 
     _user = {'id_user': _user.id_user,
              "birth_date": _user.birth_date.strftime("%d/%m/%Y"),
@@ -133,7 +135,8 @@ def format_user(_user, languages=None, pictures=None):
              "reported_by": _reported_by,
              "is_disabled": _is_disabled,
              "blocked_by": _blocked_by,
-             "blocked": _blocked
+             "blocked": _blocked,
+             "user_status": _user_status
              }
     return _user
 
@@ -268,6 +271,49 @@ def new_status(user_id):
         post_data = request.get_json()
         post_data['id_user'] = user_id
         _return = validate_and_create_disabled_account(post_data)
+    except usersException as e:
+        return jsonify({'Error': e.message}), e.error_code
+    return jsonify({'Status': 'Updated'}), 200
+
+
+@bp_user.route("/<int:user_id>/user_status", methods=['PUT'])
+@swag_from(methods=['PUT'])
+def new_user_status(user_id):
+    """
+    Change status for user's by id
+    ---
+    tags:
+      - user
+    consumes:
+      - application/json
+    parameters:
+      - in: path
+        name: user_id
+        type: integer
+        required: true
+      - name: body
+        in: body
+        required: true
+        schema:
+            required:
+              - user_status
+            properties:
+              user_status:
+                type: string
+                description: New user status.
+    responses:
+      200:
+        description: A successful change of user status.
+        schema:
+          properties:
+              user_id:
+                type: integer
+                description: Unique identifier representing the user.
+    """
+    try:
+        post_data = request.get_json()
+        post_data['id_user'] = user_id
+        _return = validate_and_create_user_status(user_id, post_data)
     except usersException as e:
         return jsonify({'Error': e.message}), e.error_code
     return jsonify({'Status': 'Updated'}), 200

@@ -56,3 +56,11 @@ class UserDisabledError(usersException):
         self.message = message
         self.error_code = 403
         super().__init__(self.message, self.error_code)
+
+
+class EmptyUserStatusError(usersException):
+    def __init__(self, message="User status can't be empty."):
+        current_app.logger.error("User status can't be empty.")
+        self.message = message
+        self.error_code = 403
+        super().__init__(self.message, self.error_code)
