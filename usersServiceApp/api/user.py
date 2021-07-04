@@ -116,7 +116,7 @@ def format_user(_user, languages=None, pictures=None):
     _followers = get_followers(_user.id_user)
     _reported_by = get_reports(_user.id_user)
     _is_disabled = is_disabled(_user.id_user)
-    _blocked, _blocked_by, another = get_blocks(_user.id_user)
+    _blocked_by, _blocked, another = get_blocks(_user.id_user)
     _user_status = get_user_last_status_logic(_user.id_user)
 
     _user = {'id_user': _user.id_user,

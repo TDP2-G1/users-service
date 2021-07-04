@@ -58,7 +58,10 @@ class FlaskTest(unittest.TestCase):
         response = tester.get("/user/", content_type='application/json')
         status_code = response.status_code
         data = json.loads(response.get_data(as_text=True))
+        print(data)
         self.assertEqual(status_code, 200)
+        self.assertEqual(data[0]['blocked_by'][0], 2)
+        self.assertEqual(data[1]['blocked'][0], 1)
 
 
     def test_valid_unblock(self):
