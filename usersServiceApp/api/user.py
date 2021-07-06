@@ -2,12 +2,18 @@ from flask import request
 from flasgger.utils import swag_from
 from flask import Blueprint
 
+from usersServiceApp.core.block_logic import get_blocks
+from usersServiceApp.core.disabled_account_logic import is_disabled, validate_and_create_disabled_account
 from usersServiceApp.core.follower_logic import get_followers
-from usersServiceApp.core.register_logic import register_user,  \
+from usersServiceApp.core.register_logic import register_user, \
     get_user_info_by_fb_user_id, get_languages, get_user_pictures
+from usersServiceApp.core.report_logic import get_reports
+from usersServiceApp.core.user_status_logic import get_user_last_status_logic, validate_and_create_user_status
 from usersServiceApp.errors.usersException import usersException
 from flask import jsonify
 
+from usersServiceApp.infra.db_block import get_blocked_by_id, get_blocks_by_id
+from usersServiceApp.infra.db_disabled_account import create_disabled_account
 from usersServiceApp.infra.db_feedback import get_user_amount_received_feedbacks
 from usersServiceApp.infra.db_user import get_all_users, get_fb_user_by_user_id
 
@@ -108,6 +114,10 @@ def format_user(_user, languages=None, pictures=None):
     amount_feedbacks = get_user_amount_received_feedbacks(_user.id_user)
     my_fb_user_id = get_fb_user_by_user_id(_user.id_user).fb_user_id
     _followers = get_followers(_user.id_user)
+    _reported_by = get_reports(_user.id_user)
+    _is_disabled = is_disabled(_user.id_user)
+    _blocked_by, _blocked, another = get_blocks(_user.id_user)
+    _user_status = get_user_last_status_logic(_user.id_user)
 
     _user = {'id_user': _user.id_user,
              "birth_date": _user.birth_date.strftime("%d/%m/%Y"),
@@ -121,7 +131,12 @@ def format_user(_user, languages=None, pictures=None):
              "pictures": pictures,
              "amount_feedbacks": amount_feedbacks,
              "fb_user_id": my_fb_user_id,
-             "followers": _followers
+             "followers": _followers,
+             "reported_by": _reported_by,
+             "is_disabled": _is_disabled,
+             "blocked_by": _blocked_by,
+             "blocked": _blocked,
+             "user_status": _user_status
              }
     return _user
 
@@ -216,3 +231,89 @@ def get_user_if_registered(fb_user_id):
     except usersException as e:
         return jsonify({'Error': e.message}), e.error_code
     return jsonify(formated_user), 200
+
+
+@bp_user.route("/<int:user_id>/account_status", methods=['PUT'])
+@swag_from(methods=['PUT'])
+def new_status(user_id):
+    """
+    Change status for user's by id
+    ---
+    tags:
+      - user
+    consumes:
+      - application/json
+    parameters:
+      - in: path
+        name: user_id
+        type: integer
+        required: true
+      - name: body
+        in: body
+        required: true
+        schema:
+            required:
+              - is_disabled
+            properties:
+              is_disabled:
+                type: boolean
+                description: New disabled status.
+    responses:
+      200:
+        description: A successful change of user blocked status.
+        schema:
+          properties:
+              user_id:
+                type: integer
+                description: Unique identifier representing the user.
+    """
+    try:
+        post_data = request.get_json()
+        post_data['id_user'] = user_id
+        _return = validate_and_create_disabled_account(post_data)
+    except usersException as e:
+        return jsonify({'Error': e.message}), e.error_code
+    return jsonify({'Status': 'Updated'}), 200
+
+
+@bp_user.route("/<int:user_id>/user_status", methods=['PUT'])
+@swag_from(methods=['PUT'])
+def new_user_status(user_id):
+    """
+    Change status for user's by id
+    ---
+    tags:
+      - user
+    consumes:
+      - application/json
+    parameters:
+      - in: path
+        name: user_id
+        type: integer
+        required: true
+      - name: body
+        in: body
+        required: true
+        schema:
+            required:
+              - user_status
+            properties:
+              user_status:
+                type: string
+                description: New user status.
+    responses:
+      200:
+        description: A successful change of user status.
+        schema:
+          properties:
+              user_id:
+                type: integer
+                description: Unique identifier representing the user.
+    """
+    try:
+        post_data = request.get_json()
+        post_data['id_user'] = user_id
+        _return = validate_and_create_user_status(user_id, post_data)
+    except usersException as e:
+        return jsonify({'Error': e.message}), e.error_code
+    return jsonify({'Status': 'Updated'}), 200

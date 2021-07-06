@@ -48,3 +48,19 @@ class UserNotExistsError(usersException):
         self.message = message
         self.error_code = 404
         super().__init__(self.message, self.error_code)
+
+
+class UserDisabledError(usersException):
+    def __init__(self, message="User is disabled."):
+        current_app.logger.error("User is disabled.")
+        self.message = message
+        self.error_code = 403
+        super().__init__(self.message, self.error_code)
+
+
+class EmptyUserStatusError(usersException):
+    def __init__(self, message="User status can't be empty."):
+        current_app.logger.error("User status can't be empty.")
+        self.message = message
+        self.error_code = 403
+        super().__init__(self.message, self.error_code)

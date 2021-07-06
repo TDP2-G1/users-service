@@ -8,12 +8,16 @@ from flask_cors import CORS
 import usersServiceApp.commands
 import usersServiceApp.database
 import usersServiceApp.model
+from usersServiceApp.api.admin import bp_admin
+from usersServiceApp.api.block import bp_block
 from usersServiceApp.api.feedback import bp_feedback
 from usersServiceApp.api.follower import bp_follower
 from usersServiceApp.api.genre import bp_genre
 from usersServiceApp.api.home_info import bp_homeinfo
 from usersServiceApp.api.language import bp_language
 from usersServiceApp.api.level import bp_level
+from usersServiceApp.api.report import bp_report
+from usersServiceApp.api.report_type import bp_report_type
 from usersServiceApp.api.user import bp_user
 
 
@@ -39,6 +43,10 @@ def create_app(my_config=None):
     CORS(bp_level)  # enable CORS on the bp_stinfo blue print
     CORS(bp_feedback)
     CORS(bp_follower)
+    CORS(bp_report_type)
+    CORS(bp_report)
+    CORS(bp_block)
+    CORS(bp_admin)
 
     @app.before_first_request
     def create_db():
@@ -51,6 +59,10 @@ def create_app(my_config=None):
     app.register_blueprint(bp_level)
     app.register_blueprint(bp_feedback)
     app.register_blueprint(bp_follower)
+    app.register_blueprint(bp_report_type)
+    app.register_blueprint(bp_report)
+    app.register_blueprint(bp_block)
+    app.register_blueprint(bp_admin)
 
     # setup swagger
     swagger = Swagger(app)
