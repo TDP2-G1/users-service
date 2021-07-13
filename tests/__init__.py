@@ -100,3 +100,9 @@ VALID_USER_STATUS_2 = json.dumps(
 
 VALID_USER_STATUS_3 = json.dumps(
     {'id_user': 1, 'user_status': 'oNlinE'})
+
+VALID_LOGIN_1 = json.dumps(
+    {'id_user': 1})
+
+VALID_LOGIN_2 = json.dumps(
+    {'id_user': 2})

@@ -153,3 +153,11 @@ class admin(db.Model):
 
     def __repr__(self):
         return f"admin: {self.email}"
+
+
+class log_login_user(db.Model):
+    id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True, nullable=False)
+    date_created = db.Column(db.DateTime, default=db.func.current_timestamp(), primary_key=True)
+
+    def __repr__(self):
+        return f"country: {self.id_user, self.country_iso_2_code, self.date_created}"
