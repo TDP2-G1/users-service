@@ -53,6 +53,17 @@ VALID_OTHER_REPORT = json.dumps(
         "other_text": "Cosas feas"
     })
 
+
+VALID_UPDATE_REPORT_FALSE = json.dumps(
+    {
+        "is_pending": False
+    })
+
+VALID_UPDATE_REPORT_TRUE = json.dumps(
+    {
+        "is_pending": True
+    })
+
 VALID_DISABLED_ACCOUNT = json.dumps(
     {
         "is_disabled": True

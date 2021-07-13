@@ -161,3 +161,12 @@ class log_login_user(db.Model):
 
     def __repr__(self):
         return f"country: {self.id_user, self.country_iso_2_code, self.date_created}"
+
+
+class report_status(db.Model):
+    id_report = db.Column(db.Integer, db.ForeignKey('report.id_report'), primary_key=True, nullable=False, unique=True)
+    is_pending = db.Column(db.BOOLEAN, default=False, primary_key=True)
+    date_created = db.Column(db.DateTime, default=db.func.current_timestamp(), primary_key=True, unique=True)
+
+    def __repr__(self):
+        return f"report_status: {self.id_report, self.is_pending}"

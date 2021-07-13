@@ -51,7 +51,7 @@ def new_login():
 
 @bp_login.route("/dataset", methods=['GET'])
 @swag_from(methods=['GET'])
-def get_user_if_registered():
+def get_login_dataset():
     """
     Get user if registered
     ---

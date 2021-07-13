@@ -1,5 +1,8 @@
+from sqlalchemy import desc
+
+from usersServiceApp import database
 from usersServiceApp.infra import create_in_db
-from usersServiceApp.model import report, report_type, report_text
+from usersServiceApp.model import report, report_type, report_text, report_status
 
 
 def create_report_type(post_data):
@@ -50,3 +53,17 @@ def create_report_text(id_report, text):
 def get_text_report_by_id(id_report):
     return report_text.query.filter_by(id_report=id_report).first()
 
+
+def create_report_status(id_report, is_pending=True):
+    _report_status = report_status(id_report=id_report, is_pending=is_pending)
+    create_in_db(_report_status)
+    return True
+
+
+def get_status_report_by_id(id_report):
+    return report_status.query.filter_by(id_report=id_report).first()
+
+
+def delete_report_status(id_report):
+    report_status.query.filter_by(id_report=id_report).delete()
+    database.db.session.commit()
