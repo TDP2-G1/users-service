@@ -20,9 +20,9 @@ def validate_and_create_report(post_data):
     validate_user_id_exists(post_data['id_user_reported_by'])
     _report_created = create_report(post_data['id_report_type'], post_data['id_user_reported']
                                     , post_data['id_user_reported_by'])
-    # TODO si other_text no es vacio crear report text
     if 'other_text' in post_data and post_data['other_text']:
         create_report_text(_report_created.id_report, post_data['other_text'])
+    validate_and_update_report_status(_report_created.id_report, True)
 
 
 def get_reports_info(id_user_reported):
@@ -106,8 +106,8 @@ def format_report_status(month_year, log):
     if "pendientes" in log:
         pendientes = log["pendientes"]
     _data = {
-        "month": month,
-        "year": year,
+        "month": int(month),
+        "year": int(year),
         "abiertas": abiertas,
         "pendientes": pendientes
     }

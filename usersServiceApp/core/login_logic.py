@@ -35,9 +35,9 @@ def format_log(log):
 
 def format_dataset(date, log):
     _data = {
-        "day": date[:2],
-        "month": date[3:5],
-        "year": date[6:10],
+        "day": int(date[:2]),
+        "month": int(date[3:5]),
+        "year": int(date[6:10]),
         "active_users": len(log['users'])
     }
     return _data
