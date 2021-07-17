@@ -152,3 +152,27 @@ class FlaskTest(unittest.TestCase):
         self.assertEqual(data[0]['abiertas'], 1)
         self.assertEqual(data[0]['pendientes'], 0)
         self.assertEqual(status_code, 200)
+
+    def test_valid_report_with_status(self):
+        tester = create_app().test_client(self)
+        genre_creation(tester, 'Male')
+        language_creation(tester, 'English')
+        level_creation(tester, 'Advanced')
+        tester.post("/report_type/", data=json.dumps({'report_type_description': 'Algo malo'}),
+                    content_type='application'
+                                 '/json')
+        response = tester.post("/user/", data=VALID_REGISTER, content_type='application/json')
+        response = tester.post("/user/", data=ANOTHER_VALID_REGISTER, content_type='application/json')
+        response = tester.post("/report/", data=VALID_REPORT, content_type='application/json')
+        status_code = response.status_code
+        data = json.loads(response.get_data(as_text=True))
+        self.assertEqual(data['Status'], 'Report Created')
+        self.assertEqual(status_code, 200)
+        response = tester.get("/user/u23y48298", content_type='application/json')
+        status_code = response.status_code
+        data = json.loads(response.get_data(as_text=True))
+        print(data)
+        self.assertEqual(data['reported_by'][0], 2)
+        self.assertEqual(data['reported_by_with_status'][0]['is_pending'], True)
+        self.assertEqual(data['reported_by_with_status'][0]['user_reported_by'], 2)
+        self.assertEqual(status_code, 200)

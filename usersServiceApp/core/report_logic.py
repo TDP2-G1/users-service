@@ -67,6 +67,18 @@ def get_reports(id_user_reported):
     return list(set(_reports))
 
 
+def get_reports_with_status(id_user_reported):
+    reports = get_report_by_user_reported(id_user_reported)
+    _reports = []
+    for report in reports:
+        _data = {
+            'user_reported_by': report.id_user_reported_by,
+            'is_pending': get_status_report_by_id(report.id_report).is_pending
+        }
+        _reports.append(_data)
+    return _reports
+
+
 def validate_and_update_report_status(id_report, is_pending):
     if get_report_by_id(id_report) is None:
         raise notExistentIdReportError
@@ -88,7 +100,7 @@ def get_report_status_dataset():
             if pending and 'pendientes' in _dataset[month_year]:
                 _dataset[month_year]['pendientes'] = _dataset[month_year]['pendientes'] + 1
             else:
-                _dataset[month_year] = {'pendientes' : 1}
+                _dataset[month_year] = {'pendientes': 1}
 
         else:
             _dataset[month_year] = {"abiertas": 1}
@@ -97,6 +109,7 @@ def get_report_status_dataset():
     for month_year in _dataset:
         nuevo.append(format_report_status(month_year, _dataset[month_year]))
     return nuevo
+
 
 def format_report_status(month_year, log):
     month = month_year.split("/")[0]
@@ -111,4 +124,4 @@ def format_report_status(month_year, log):
         "abiertas": abiertas,
         "pendientes": pendientes
     }
-    return  _data
+    return _data
