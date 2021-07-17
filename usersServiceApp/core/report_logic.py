@@ -71,9 +71,12 @@ def get_reports_with_status(id_user_reported):
     reports = get_report_by_user_reported(id_user_reported)
     _reports = []
     for report in reports:
+        pending = True
+        if get_status_report_by_id(report.id_report) is not None:
+            pending = get_status_report_by_id(report.id_report).is_pending
         _data = {
             'user_reported_by': report.id_user_reported_by,
-            'is_pending': get_status_report_by_id(report.id_report).is_pending
+            'is_pending': pending
         }
         _reports.append(_data)
     return _reports
