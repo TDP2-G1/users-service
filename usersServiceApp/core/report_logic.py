@@ -110,8 +110,10 @@ def get_report_status_dataset():
             _dataset[month_year] = {"abiertas": 1}
             if pending: _dataset[month_year]['pendientes'] = 1
     nuevo = []
+    print(_dataset)
     for month_year in _dataset:
         nuevo.append(format_report_status(month_year, _dataset[month_year]))
+    print(nuevo)
     return nuevo
 
 
