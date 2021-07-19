@@ -53,6 +53,25 @@ VALID_OTHER_REPORT = json.dumps(
         "other_text": "Cosas feas"
     })
 
+VALID_OTHER_REPORT_2 = json.dumps(
+    {
+        "id_report_type": 1,
+        "id_user_reported": 2,
+        "id_user_reported_by": 1,
+        "other_text": "Cosas feas"
+    })
+
+
+VALID_UPDATE_REPORT_FALSE = json.dumps(
+    {
+        "is_pending": False
+    })
+
+VALID_UPDATE_REPORT_TRUE = json.dumps(
+    {
+        "is_pending": True
+    })
+
 VALID_DISABLED_ACCOUNT = json.dumps(
     {
         "is_disabled": True
@@ -100,3 +119,9 @@ VALID_USER_STATUS_2 = json.dumps(
 
 VALID_USER_STATUS_3 = json.dumps(
     {'id_user': 1, 'user_status': 'oNlinE'})
+
+VALID_LOGIN_1 = json.dumps(
+    {'id_user': 1})
+
+VALID_LOGIN_2 = json.dumps(
+    {'id_user': 2})

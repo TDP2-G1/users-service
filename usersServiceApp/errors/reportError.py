@@ -16,3 +16,11 @@ class notExistentReportTypeError(usersException):
         self.message = message
         self.error_code = 403
         super().__init__(self.message, self.error_code)
+
+
+class notExistentIdReportError(usersException):
+    def __init__(self, message="Report ID doesn't exists."):
+        current_app.logger.error("Report ID doesn't exists.")
+        self.message = message
+        self.error_code = 403
+        super().__init__(self.message, self.error_code)

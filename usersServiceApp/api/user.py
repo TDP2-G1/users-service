@@ -7,7 +7,7 @@ from usersServiceApp.core.disabled_account_logic import is_disabled, validate_an
 from usersServiceApp.core.follower_logic import get_followers
 from usersServiceApp.core.register_logic import register_user, \
     get_user_info_by_fb_user_id, get_languages, get_user_pictures
-from usersServiceApp.core.report_logic import get_reports
+from usersServiceApp.core.report_logic import get_reports, get_reports_with_status
 from usersServiceApp.core.user_status_logic import get_user_last_status_logic, validate_and_create_user_status
 from usersServiceApp.errors.usersException import usersException
 from flask import jsonify
@@ -115,6 +115,7 @@ def format_user(_user, languages=None, pictures=None):
     my_fb_user_id = get_fb_user_by_user_id(_user.id_user).fb_user_id
     _followers = get_followers(_user.id_user)
     _reported_by = get_reports(_user.id_user)
+    _reported_by_with_status = get_reports_with_status(_user.id_user)
     _is_disabled = is_disabled(_user.id_user)
     _blocked_by, _blocked, another = get_blocks(_user.id_user)
     _user_status = get_user_last_status_logic(_user.id_user)
@@ -133,6 +134,7 @@ def format_user(_user, languages=None, pictures=None):
              "fb_user_id": my_fb_user_id,
              "followers": _followers,
              "reported_by": _reported_by,
+             "reported_by_with_status": _reported_by_with_status,
              "is_disabled": _is_disabled,
              "blocked_by": _blocked_by,
              "blocked": _blocked,

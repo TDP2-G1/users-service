@@ -14,4 +14,3 @@ def create_tables():
     if current_app.config['TESTING']:
         db.drop_all()
         db.create_all()
-

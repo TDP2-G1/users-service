@@ -16,6 +16,7 @@ from usersServiceApp.api.genre import bp_genre
 from usersServiceApp.api.home_info import bp_homeinfo
 from usersServiceApp.api.language import bp_language
 from usersServiceApp.api.level import bp_level
+from usersServiceApp.api.login import bp_login
 from usersServiceApp.api.report import bp_report
 from usersServiceApp.api.report_type import bp_report_type
 from usersServiceApp.api.user import bp_user
@@ -47,6 +48,8 @@ def create_app(my_config=None):
     CORS(bp_report)
     CORS(bp_block)
     CORS(bp_admin)
+    CORS(bp_login)
+
 
     @app.before_first_request
     def create_db():
@@ -63,6 +66,7 @@ def create_app(my_config=None):
     app.register_blueprint(bp_report)
     app.register_blueprint(bp_block)
     app.register_blueprint(bp_admin)
+    app.register_blueprint(bp_login)
 
     # setup swagger
     swagger = Swagger(app)
