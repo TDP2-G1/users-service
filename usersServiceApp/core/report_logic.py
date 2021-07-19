@@ -102,7 +102,7 @@ def get_report_status_dataset():
             _dataset[month_year]['abiertas'] = _dataset[month_year]['abiertas'] + 1
             if pending and 'pendientes' in _dataset[month_year]:
                 _dataset[month_year]['pendientes'] = _dataset[month_year]['pendientes'] + 1
-            else:
+            if pending and 'pendientes' not in _dataset[month_year]:
                 _dataset[month_year]['pendientes'] = 1
         else:
             _dataset[month_year] = {"abiertas": 1}
