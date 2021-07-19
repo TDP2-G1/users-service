@@ -109,7 +109,6 @@ def update_report(report_id):
         name: report_id
         type: integer
         required: true
-    parameters:
       - name: body
         in: body
         required: true

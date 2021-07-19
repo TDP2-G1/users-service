@@ -94,6 +94,7 @@ def get_report_status_dataset():
     _reports = get_all_reports()
     _dataset = {}
     for report in _reports:
+        print(report)
         pending = True
         if get_status_report_by_id(report.id_report) is not None:
             pending = get_status_report_by_id(report.id_report).is_pending
