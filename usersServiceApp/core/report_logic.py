@@ -94,7 +94,6 @@ def get_report_status_dataset():
     _reports = get_all_reports()
     _dataset = {}
     for report in _reports:
-        print(report)
         pending = True
         if get_status_report_by_id(report.id_report) is not None:
             pending = get_status_report_by_id(report.id_report).is_pending
@@ -104,16 +103,13 @@ def get_report_status_dataset():
             if pending and 'pendientes' in _dataset[month_year]:
                 _dataset[month_year]['pendientes'] = _dataset[month_year]['pendientes'] + 1
             else:
-                _dataset[month_year] = {'pendientes': 1}
-
+                _dataset[month_year]['pendientes'] = 1
         else:
             _dataset[month_year] = {"abiertas": 1}
             if pending: _dataset[month_year]['pendientes'] = 1
     nuevo = []
-    print(_dataset)
     for month_year in _dataset:
         nuevo.append(format_report_status(month_year, _dataset[month_year]))
-    print(nuevo)
     return nuevo
 
 

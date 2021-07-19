@@ -53,6 +53,14 @@ VALID_OTHER_REPORT = json.dumps(
         "other_text": "Cosas feas"
     })
 
+VALID_OTHER_REPORT_2 = json.dumps(
+    {
+        "id_report_type": 1,
+        "id_user_reported": 2,
+        "id_user_reported_by": 1,
+        "other_text": "Cosas feas"
+    })
+
 
 VALID_UPDATE_REPORT_FALSE = json.dumps(
     {

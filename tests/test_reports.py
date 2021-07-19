@@ -1,7 +1,7 @@
 import json
 
 from tests import VALID_REGISTER, ANOTHER_VALID_REGISTER, VALID_REPORT, VALID_OTHER_REPORT, VALID_UPDATE_REPORT_FALSE, \
-    VALID_UPDATE_REPORT_TRUE
+    VALID_UPDATE_REPORT_TRUE, VALID_OTHER_REPORT_2
 from tests.test_genre_creation import genre_creation
 from tests.test_language_creation import language_creation
 from tests.test_level_creation import level_creation
@@ -144,13 +144,14 @@ class FlaskTest(unittest.TestCase):
         self.assertEqual(data[0]['abiertas'], 1)
         self.assertEqual(data[0]['pendientes'], 1)
         self.assertEqual(status_code, 200)
+        response = tester.post("/report/", data=VALID_OTHER_REPORT_2, content_type='application/json')
         response = tester.put("/report/1", data=VALID_UPDATE_REPORT_FALSE, content_type='application/json')
         response = tester.get("/report/dataset", content_type='application/json')
         status_code = response.status_code
         data = json.loads(response.get_data(as_text=True))
         print(data)
-        self.assertEqual(data[0]['abiertas'], 1)
-        self.assertEqual(data[0]['pendientes'], 0)
+        self.assertEqual(data[0]['abiertas'], 2)
+        self.assertEqual(data[0]['pendientes'], 1)
         self.assertEqual(status_code, 200)
 
     def test_valid_report_with_status(self):
